@@ -1,0 +1,24 @@
+{
+  "name": "moviedb_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./tests/**.test.js",
+    "test-watch": "nodemon --exec npm test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.4",
+    "mongoose": "^5.2.13"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4",
+    "supertest": "^3.2.0",
+    "expect": "^1.2.0",
+    "mocha": "^5.2.0"
+  }
+}
