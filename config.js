@@ -8,5 +8,6 @@ else if (env === "test") {
     process.env.MONGODB_URI = "mongodb://localhost:27017/test"
 }
 const secret = "asdasfqkptqjt2314091598138626";
+const mailpass = "personalmoviedb"
 
-module.exports = { env, secret };
+module.exports = { env, secret, mailpass };

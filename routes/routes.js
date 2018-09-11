@@ -6,8 +6,17 @@ const { ObjectId } = require("mongodb");
 const { User } = require("../db/models/User");
 const { auth } = require("./auth");
 const _ = require("lodash");
+const nodemailer = require("nodemailer");
+const mailpass = require("../config").mailpass
 
 module.exports = (app) => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "server.personalmoviedb@gmail.com",
+            pass: mailpass,
+        }
+    })
     // POST
     app.post("/movies/", auth, (req, res) => {
         let newMovie = new Movie({
@@ -20,7 +29,23 @@ module.exports = (app) => {
         let user = new User({
             email: req.body.email, password: req.body.password,
         })
-        user.save().then((user) => { return user.generateAuthToken() }).then((token) => { res.header("x-auth", token).send(user) }).catch((e) => res.status(400 || 404).send(e));
+        user.save().then((user) => { return user.generateAuthToken() }).then((token) => {
+            res.header("x-auth", token).send(user);
+            let mailOptions = {
+                from: 'server.personalmoviedb@gmail.com',
+                to: req.body.email,
+                subject: "Personal Movie DB Sign Up",
+                text: `Hello and welcome to PMDB, your password is ${req.body.password}, keep it safe`
+            }
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (error) {
+                    console.log(err)
+                }
+                else {
+                    console.log("Email sent", info.response)
+                }
+            })
+        }).catch((e) => res.status(400 || 404).send(e));
     })
     // GET
     app.get("/movies/", auth, (req, res) => {
