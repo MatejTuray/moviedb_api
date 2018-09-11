@@ -39,6 +39,10 @@ const Movie = mongoose.model("Movie", {
     poster: {
         type: String,
         default: null,
+    },
+    _creator: {
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
     }
 })
 
