@@ -128,8 +128,7 @@ module.exports = (app) => {
                 $set: {
                     watched: req.body.watched,
                     dateToWatch: req.body.dateToWatch,
-                    note: req.body.note,
-                    poster: req.body.poster,
+                    note: req.body.note,                    
                 },
             }, {
                 new: true
