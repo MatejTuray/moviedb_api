@@ -23,7 +23,8 @@ const Movie = mongoose.model("Movie", {
     },
     plot: {
         type: String,
-        required: true,
+        default: "",
+        minlength: 1,
     },
     watched: {
         type: Boolean,
