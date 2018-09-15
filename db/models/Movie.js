@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const moment = require("moment");
 const Movie = mongoose.model("Movie", {
     name: {
         type: String,
@@ -26,7 +26,7 @@ const Movie = mongoose.model("Movie", {
         default: false,
     },
     dateToWatch: {
-        type: Number,
+        type: moment(),
         required: false,
         default: null,
     },
