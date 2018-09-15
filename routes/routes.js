@@ -20,7 +20,7 @@ module.exports = (app) => {
     // POST
     app.post("/movies/", auth, (req, res) => {
         let newMovie = new Movie({
-            name: req.body.name, year: req.body.year, director: req.body.director, rating: req.body.rating, watched: req.body.watched, dateToWatch: req.body.dateToWatch, note: req.body.note, poster: req.body.poster, _creator: req.user._id
+            name: req.body.name, year: req.body.year, director: req.body.director, rating: req.body.rating, watched: req.body.watched, dateToWatch: req.body.dateToWatch, note: req.body.note, plot: req.body.plot, poster: req.body.poster, _creator: req.user._id
         })
         newMovie.save().then((movie) => res.send(movie)).catch((e) => res.status(400).send(e))
     })
