@@ -26,7 +26,7 @@ const Movie = mongoose.model("Movie", {
         default: false,
     },
     dateToWatch: {
-        type: moment(),
+        type: Date,
         required: false,
         default: null,
     },
