@@ -21,6 +21,10 @@ const Movie = mongoose.model("Movie", {
         required: true,
 
     },
+    plot: {
+        type: String,
+        required: true,
+    }
     watched: {
         type: Boolean,
         default: false,
