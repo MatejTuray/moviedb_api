@@ -74,6 +74,32 @@ module.exports = (app) => {
 
 
     })
+    //GET FILTER WATCHED
+    app.get("/movies/filter/watched", auth, (req, res) => {
+        Movie.find({
+            _creator: req.user._id,
+            watched: true,
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
+    app.get("/movies/filter/notwatched", auth, (req, res) => {
+        Movie.find({
+            _creator: req.user._id,
+            watched: false,
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
+    //GET FILTER TYPE
+    app.get("/movies/filter/movies", auth, (req, res) => {
+        Movie.find({
+            _creator: req.user._id,
+            type: "movie",
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
+    app.get("/movies/filter/series", auth, (req, res) => {
+        Movie.find({
+            _creator: req.user._id,
+            type: "series",
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
     //GET PRIVATE
 
     app.get("/users/me", auth, (req, res) => {
