@@ -88,6 +88,13 @@ module.exports = (app) => {
             type: "movie",
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
+    app.get("/movies/filter/type/", auth, (req, res) => {
+        let type = req.body.type
+        Movie.find({
+            _creator: req.user._id,
+            type: type,
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
 
     //GET FILTER MIX
     app.get("/movies/filter/", auth, (req, res) => {
