@@ -74,32 +74,7 @@ module.exports = (app) => {
 
 
     })
-    // //FILTER WATCHED
-    // app.get("/movies/filter/watched", auth, (req, res) => {
-    //     Movie.find({
-    //         _creator: req.user._id,
-    //         watched: true,
-    //     }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-    // })
-    // //FILTER TYPE
-    // app.post("/movies/filter/type/movie", auth, (req, res) => {
-    //     console.log(req.body)
-    //     Movie.find({
-    //         _creator: req.user._id,
-    //         type: "movie",
-    //         watched: req.body.watched,
-    //     }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-    // })
-    // app.post("/movies/filter/type/series", auth, (req, res) => {
-    //     console.log(req.body)
-    //     Movie.find({
-    //         _creator: req.user._id,
-    //         type: "series",
-    //         watched: req.body.watched,
-    //     }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-    // })
-
-    //FILTER MIX
+   
     app.post("/movies/filter/", auth, (req, res) => {
         console.log(req.body)
         if (req.body.watched !== "" && req.body.type !== "" req.body.year !== "") {
