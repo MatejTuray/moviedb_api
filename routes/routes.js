@@ -83,17 +83,19 @@ module.exports = (app) => {
     })
     //GET FILTER TYPE
     app.get("/movies/filter/type/movie", auth, (req, res) => {
+        console.log(req.body)
         Movie.find({
             _creator: req.user._id,
             type: "movie",
+            watched: req.body.watched,
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
     app.get("/movies/filter/type/series", auth, (req, res) => {
-        let type = req.body.type
-        console.log(type)
+        console.log(req.body)
         Movie.find({
             _creator: req.user._id,
             type: "series",
+            watched: req.body.watched,
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
 
