@@ -114,6 +114,18 @@ module.exports = (app) => {
                 year: req.body.year
             }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
         }
+        else if (req.body.type !== "") {
+            Movie.find({
+                _creator: req.user._id,
+                type: req.body.type
+            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+        }
+        else if (req.body.watched !== "") {
+            Movie.find({
+                _creator: req.user._id,
+                watched: req.body.watched
+            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+        }
         else {
             Movie.find({
                 _creator: req.user._id,
