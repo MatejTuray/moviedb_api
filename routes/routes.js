@@ -80,90 +80,90 @@ module.exports = (app) => {
             _creator: req.user._id,
             watched: req.body.watched,
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
+    //GET FILTER TYPE
+    app.get("/movies/filter/type", auth, (req, res) => {
+        Movie.find({
+            _creator: req.user._id,
+            type: req.body.type,
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
 
-        //GET FILTER TYPE
-        app.get("/movies/filter/type", auth, (req, res) => {
-            Movie.find({
-                _creator: req.user._id,
-                type: req.body.type,
-            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    //GET FILTER MIX
+    app.get("/movies/filter/", auth, (req, res) => {
+        Movie.find({
+            _creator: req.user._id,
+            type: req.body.type,
+            watched: req.body.watched,
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
+    //GET PRIVATE
+
+    app.get("/users/me", auth, (req, res) => {
+        res.send(req.user);
+    })
+
+    //POST LOGIN
+
+    app.post("/users/login", (req, res) => {
+        let body = _.pick(req.body, ["email", "password"])
+        User.findByCred(body.email, body.password).then((user) => {
+            return user.generateAuthToken().then((token) => { res.header("x-auth", token).send(user) })
+        }).catch((e) => {
+            res.status(400).send({ response: "User not found" });
+            console.log(e)
         })
 
-        //GET FILTER MIX
-        app.get("/movies/filter/", auth, (req, res) => {
-            Movie.find({
-                _creator: req.user._id,
-                type: req.body.type,
-                watched: req.body.watched,
-            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-        })
-        //GET PRIVATE
+    })
+    //DELETE LOGOUT
 
-        app.get("/users/me", auth, (req, res) => {
-            res.send(req.user);
-        })
-
-        //POST LOGIN
-
-        app.post("/users/login", (req, res) => {
-            let body = _.pick(req.body, ["email", "password"])
-            User.findByCred(body.email, body.password).then((user) => {
-                return user.generateAuthToken().then((token) => { res.header("x-auth", token).send(user) })
-            }).catch((e) => {
-                res.status(400).send({ response: "User not found" });
-                console.log(e)
-            })
-
-        })
-        //DELETE LOGOUT
-
-        app.delete("/users/me/token", auth, (req, res) => {
-            req.user.removeToken(req.token).then(() => { res.status(200).send() }, () => { res.status(401).send() })
-        })
-        // DELETE
-        app.delete("/movies/:id", auth, (req, res) => {
-            let id = req.params.id
-            if (!ObjectId.isValid(id)) {
-                return res.status(400).send({ response: "Invalid ID format" })
+    app.delete("/users/me/token", auth, (req, res) => {
+        req.user.removeToken(req.token).then(() => { res.status(200).send() }, () => { res.status(401).send() })
+    })
+    // DELETE
+    app.delete("/movies/:id", auth, (req, res) => {
+        let id = req.params.id
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).send({ response: "Invalid ID format" })
+        }
+        Movie.findOneAndRemove({
+            _id: id,
+            _creator: req.user._id
+        }).then((movie) => {
+            if (movie) {
+                res.send({ movie })
             }
-            Movie.findOneAndRemove({
-                _id: id,
-                _creator: req.user._id
+            else if (!movie) {
+                res.status(404).send({ response: "Movie not found" })
+            }
+        }).catch((e) => console.log(e))
+    })
+    // UPDATE
+    app.patch("/movies/:id", auth, (req, res) => {
+        let id = req.params.id
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).send({ response: "Invalid ID format" })
+        }
+        Movie.findOneAndUpdate({
+            _id: id,
+            _creator: req.user._id
+        }, {
+                $set: {
+                    watched: req.body.watched,
+                    dateToWatch: req.body.dateToWatch,
+                    note: req.body.note,
+                },
+            }, {
+                new: true
+
             }).then((movie) => {
                 if (movie) {
                     res.send({ movie })
                 }
-                else if (!movie) {
+                else {
                     res.status(404).send({ response: "Movie not found" })
                 }
             }).catch((e) => console.log(e))
-        })
-        // UPDATE
-        app.patch("/movies/:id", auth, (req, res) => {
-            let id = req.params.id
-            if (!ObjectId.isValid(id)) {
-                return res.status(400).send({ response: "Invalid ID format" })
-            }
-            Movie.findOneAndUpdate({
-                _id: id,
-                _creator: req.user._id
-            }, {
-                    $set: {
-                        watched: req.body.watched,
-                        dateToWatch: req.body.dateToWatch,
-                        note: req.body.note,
-                    },
-                }, {
-                    new: true
+    })
 
-                }).then((movie) => {
-                    if (movie) {
-                        res.send({ movie })
-                    }
-                    else {
-                        res.status(404).send({ response: "Movie not found" })
-                    }
-                }).catch((e) => console.log(e))
-        })
-
-    }
+}
