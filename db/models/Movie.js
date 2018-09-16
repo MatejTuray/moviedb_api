@@ -7,9 +7,10 @@ const Movie = mongoose.model("Movie", {
         minlength: 1,
     },
     year: {
-        type: String,
+        type: Number,
         required: true,
-        minlength: 4,
+        min: 1900,
+        max: 2018
     },
     director: {
         type: String,

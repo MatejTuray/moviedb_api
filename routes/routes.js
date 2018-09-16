@@ -102,24 +102,33 @@ module.exports = (app) => {
     //FILTER MIX
     app.post("/movies/filter/", auth, (req, res) => {
         console.log(req.body)
-        if (req.body.watched !== "" && req.body.type !== "") {
+        if (req.body.watched !== "" && req.body.type !== "" req.body.year !== "") {
             Movie.find({
                 _creator: req.user._id,
                 type: req.body.type,
                 watched: req.body.watched,
+                year: req.body.year
             }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
         }
-        else if (req.body.watched !== "") {
+        else if (req.body.watched !== "" req.body.year !== "") {
             Movie.find({
                 _creator: req.user._id,
                 watched: req.body.watched,
+                year: req.body.year
             }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
 
         }
-        else if (req.body.type !== "") {
+        else if (req.body.type !== "" req.body.year !== "") {
             Movie.find({
                 _creator: req.user._id,
                 type: req.body.type,
+                year: req.body.year
+            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+        }
+        else if (req.body.year !== "") {
+            Movie.find({
+                _creator: req.user._id,
+                year: req.body.year
             }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
         }
         else {
