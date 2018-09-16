@@ -82,7 +82,7 @@ module.exports = (app) => {
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
     //GET FILTER TYPE
-    app.get("/movies/filter/type/movie", auth, (req, res) => {
+    app.post("/movies/filter/type/movie", auth, (req, res) => {
         console.log(req.body)
         Movie.find({
             _creator: req.user._id,
@@ -90,7 +90,7 @@ module.exports = (app) => {
             watched: req.body.watched,
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
-    app.get("/movies/filter/type/series", auth, (req, res) => {
+    app.post("/movies/filter/type/series", auth, (req, res) => {
         console.log(req.body)
         Movie.find({
             _creator: req.user._id,
