@@ -100,6 +100,14 @@ module.exports = (app) => {
             type: "series",
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
+    //GET FILTER MIX
+    app.get("/movies/filter/", auth, (req, res) => {
+        Movie.find({
+            _creator: req.user._id,
+            type: req.body.type,
+            watched: req.body.watched,
+        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    })
     //GET PRIVATE
 
     app.get("/users/me", auth, (req, res) => {
