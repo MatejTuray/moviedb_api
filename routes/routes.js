@@ -90,6 +90,7 @@ module.exports = (app) => {
     })
     app.get("/movies/filter/type/", auth, (req, res) => {
         let type = req.body.type
+        console.log(type)
         Movie.find({
             _creator: req.user._id,
             type: type,
