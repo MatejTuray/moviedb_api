@@ -78,7 +78,7 @@ module.exports = (app) => {
     app.get("/movies/filter/watched", auth, (req, res) => {
         Movie.find({
             _creator: req.user._id,
-            watched: req.body.watched,
+            watched: true,
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
     //GET FILTER TYPE
@@ -88,23 +88,17 @@ module.exports = (app) => {
             type: "movie",
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
-    app.get("/movies/filter/type/", auth, (req, res) => {
+    app.get("/movies/filter/type/series", auth, (req, res) => {
         let type = req.body.type
         console.log(type)
         Movie.find({
             _creator: req.user._id,
-            type: type,
+            type: "series",
         }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
     })
 
     //GET FILTER MIX
-    app.get("/movies/filter/", auth, (req, res) => {
-        Movie.find({
-            _creator: req.user._id,
-            type: req.body.type,
-            watched: req.body.watched,
-        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-    })
+
     //GET PRIVATE
 
     app.get("/users/me", auth, (req, res) => {
