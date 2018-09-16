@@ -74,33 +74,60 @@ module.exports = (app) => {
 
 
     })
-    //GET FILTER WATCHED
-    app.get("/movies/filter/watched", auth, (req, res) => {
-        Movie.find({
-            _creator: req.user._id,
-            watched: true,
-        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-    })
-    //GET FILTER TYPE
-    app.post("/movies/filter/type/movie", auth, (req, res) => {
-        console.log(req.body)
-        Movie.find({
-            _creator: req.user._id,
-            type: "movie",
-            watched: req.body.watched,
-        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-    })
-    app.post("/movies/filter/type/series", auth, (req, res) => {
-        console.log(req.body)
-        Movie.find({
-            _creator: req.user._id,
-            type: "series",
-            watched: req.body.watched,
-        }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
-    })
+    // //FILTER WATCHED
+    // app.get("/movies/filter/watched", auth, (req, res) => {
+    //     Movie.find({
+    //         _creator: req.user._id,
+    //         watched: true,
+    //     }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    // })
+    // //FILTER TYPE
+    // app.post("/movies/filter/type/movie", auth, (req, res) => {
+    //     console.log(req.body)
+    //     Movie.find({
+    //         _creator: req.user._id,
+    //         type: "movie",
+    //         watched: req.body.watched,
+    //     }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    // })
+    // app.post("/movies/filter/type/series", auth, (req, res) => {
+    //     console.log(req.body)
+    //     Movie.find({
+    //         _creator: req.user._id,
+    //         type: "series",
+    //         watched: req.body.watched,
+    //     }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+    // })
 
-    //GET FILTER MIX
+    //FILTER MIX
+    app.post("/movies/filter/", auth, (req, res) => {
+        console.log(req.body)
+        if (req.body.watched !== "" && req.body.type !== "") {
+            Movie.find({
+                _creator: req.user._id,
+                type: req.body.type,
+                watched: req.body.watched,
+            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+        }
+        else if (req.body.watched !== "") {
+            Movie.find({
+                _creator: req.user._id,
+                watched: req.body.watched,
+            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
 
+        }
+        else if (req.body.type !== "") {
+            Movie.find({
+                _creator: req.user._id,
+                type: req.body.type,
+            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+        }
+        else {
+            Movie.find({
+                _creator: req.user._id,
+            }).then((movies) => res.send({ movies })).catch((e) => console.log(e));
+        }
+    })
     //GET PRIVATE
 
     app.get("/users/me", auth, (req, res) => {
