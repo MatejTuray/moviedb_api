@@ -74,7 +74,8 @@ module.exports = (app) => {
 
 
     })
-   
+    //  POST FILTER
+
     app.post("/movies/filter/", auth, (req, res) => {
         console.log(req.body)
         if (req.body.watched !== "" && req.body.type !== "" && req.body.year !== "") {
@@ -187,6 +188,31 @@ module.exports = (app) => {
                     watched: req.body.watched,
                     dateToWatch: req.body.dateToWatch,
                     note: req.body.note,
+                },
+            }, {
+                new: true
+
+            }).then((movie) => {
+                if (movie) {
+                    res.send({ movie })
+                }
+                else {
+                    res.status(404).send({ response: "Movie not found" })
+                }
+            }).catch((e) => console.log(e))
+    })
+    // UPDATE WATCHED
+    app.patch("/movies/:id", auth, (req, res) => {
+        let id = req.params.id
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).send({ response: "Invalid ID format" })
+        }
+        Movie.findOneAndUpdate({
+            _id: id,
+            _creator: req.user._id
+        }, {
+                $set: {
+                    watched: req.body.watched,
                 },
             }, {
                 new: true
