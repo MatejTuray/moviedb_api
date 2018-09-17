@@ -202,7 +202,7 @@ module.exports = (app) => {
             }).catch((e) => console.log(e))
     })
     // UPDATE WATCHED
-    app.patch("/movies/:id", auth, (req, res) => {
+    app.patch("/movies/:id/watched", auth, (req, res) => {
         let id = req.params.id
         if (!ObjectId.isValid(id)) {
             return res.status(400).send({ response: "Invalid ID format" })
