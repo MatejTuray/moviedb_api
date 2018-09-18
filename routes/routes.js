@@ -226,5 +226,29 @@ module.exports = (app) => {
                 }
             }).catch((e) => console.log(e))
     })
+ // UPDATE STARS
+   app.patch("/movies/:id/rating", auth, (req, res) => {
+        let id = req.params.id
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).send({ response: "Invalid ID format" })
+        }
+        Movie.findOneAndUpdate({
+            _id: id,
+            _creator: req.user._id
+        }, {
+                $set: {
+                    rating: req.body.rating,
+                },
+            }, {
+                new: true
 
+            }).then((movie) => {
+                if (movie) {
+                    res.send({ movie })
+                }
+                else {
+                    res.status(404).send({ response: "Movie not found" })
+                }
+            }).catch((e) => console.log(e))
+    })
 }
