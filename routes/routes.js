@@ -58,18 +58,10 @@ module.exports = (app) => {
         let network = req.body.network;
         let socialToken = req.body.socialToken
         console.log(network, socialToken)
-        app.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${socialToken}`, (req, res).then((res) => {
-            res.send(user)
-            console.log(user)
-        }
-        )
-
-        )
-    });
-
-
-
-
+        app.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${socialToken}`, (req, res) => {
+            res.send()
+        })
+    })
 
     // GET
     app.get("/movies/", auth, (req, res) => {
