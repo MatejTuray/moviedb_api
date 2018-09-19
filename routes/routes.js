@@ -58,16 +58,11 @@ module.exports = (app) => {
         let network = req.body.network;
         let socialToken = req.body.socialToken
         console.log(network, socialToken)
-        passport.use(new GooglePlusTokenStrategy({
-            clientID: google_client_id,
-            clientSecret: google_secret,
-            passReqToCallback: true
-        }, (req, socialToken, profile, next) => {
-            return next(error, user)
-        }))
-        app.get('/auth/google', passport.authenticate('google-plus-token')).then((
+        app.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${socialToken}`).then((res) => {
             res.send(user)
-        ))
+            console.log(user)
+        }
+        )
 
     })
 
