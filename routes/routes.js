@@ -8,6 +8,10 @@ const { auth } = require("./auth");
 const _ = require("lodash");
 const nodemailer = require("nodemailer");
 const mailpass = require("../config").mailpass
+const passport = require("passport")
+const GooglePlusTokenStrategy = require('passport-google-plus-token');
+const google_client_id = require("../config").google_client_id
+const google_secret = require("../config").google_secret
 
 module.exports = (app) => {
     const transporter = nodemailer.createTransport({
@@ -47,6 +51,30 @@ module.exports = (app) => {
             })
         }).catch((e) => res.status(400 || 404).send(e));
     })
+
+
+    //AUTH GOOGLE
+    app.post("/auth/", (req, res) => {
+        let network = req.body.network;
+        let socialToken = req.body.socialToken
+        console.log(network, socialToken)
+        passport.use(new GooglePlusTokenStrategy({
+            clientID: google_client_id,
+            clientSecret: google_secret,
+            passReqToCallback: true
+        }, (req, socialToken, profile, next) => {
+            return next(error, user)
+        }))
+        app.get('/auth/google', passport.authenticate('google-plus-token')).then((
+            res.send(user)
+        ))
+
+    })
+
+
+
+
+
     // GET
     app.get("/movies/", auth, (req, res) => {
         Movie.find({
@@ -188,6 +216,7 @@ module.exports = (app) => {
                     watched: req.body.watched,
                     dateToWatch: req.body.dateToWatch,
                     note: req.body.note,
+                    rating: req.body.rating,
                 },
             }, {
                 new: true
@@ -226,8 +255,8 @@ module.exports = (app) => {
                 }
             }).catch((e) => console.log(e))
     })
- // UPDATE STARS
-   app.patch("/movies/:id/rating", auth, (req, res) => {
+    // UPDATE STARS
+    app.patch("/movies/:id/rating", auth, (req, res) => {
         let id = req.params.id
         if (!ObjectId.isValid(id)) {
             return res.status(400).send({ response: "Invalid ID format" })
