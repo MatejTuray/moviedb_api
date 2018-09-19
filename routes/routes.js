@@ -8,10 +8,7 @@ const { auth } = require("./auth");
 const _ = require("lodash");
 const nodemailer = require("nodemailer");
 const mailpass = require("../config").mailpass
-const passport = require("passport")
-const GooglePlusTokenStrategy = require('passport-google-plus-token');
-const google_client_id = require("../config").google_client_id
-const google_secret = require("../config").google_secret
+
 
 module.exports = (app) => {
     const transporter = nodemailer.createTransport({
@@ -53,15 +50,6 @@ module.exports = (app) => {
     })
 
 
-    //AUTH GOOGLE
-    app.post("/auth/", (req, res) => {
-        let network = req.body.network;
-        let socialToken = req.body.socialToken
-        console.log(network, socialToken)
-        app.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${socialToken}`, (req, res) => {
-            console.log(res)
-        })
-    })
 
     // GET
     app.get("/movies/", auth, (req, res) => {
