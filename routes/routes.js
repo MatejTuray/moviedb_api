@@ -56,7 +56,7 @@ module.exports = (app) => {
     //AUTH GOOGLE
     app.post("/auth/", (req, res, next) => {
         let socialToken = req.body.socialToken
-        console.log(network, socialToken)
+        console.log(socialToken)
         app.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${socialToken}`, (req, res) => {
             console.log(res); res.send()
         })
