@@ -145,7 +145,7 @@ module.exports = (app) => {
 
     //POST LOGIN
 
-    app.post("/users/login", (req, res) => {
+    app.post("/login", (req, res) => {
         let body = _.pick(req.body, ["email", "password"])
         User.findByCred(body.email, body.password).then((user) => {
             return user.generateAuthToken().then((token) => { res.header("x-auth", token).send(user) })
