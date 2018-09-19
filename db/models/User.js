@@ -59,10 +59,11 @@ UserSchema.methods.removeToken = function (token) {
             tokens: {
                 token: token
             }
-        }
-    }), user.update({
-        $unset: {
-            tokens
+        },
+        $pull: {
+            tokens: {
+
+            }
         }
     })
 }
