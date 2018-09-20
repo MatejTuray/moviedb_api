@@ -49,6 +49,16 @@ module.exports = (app) => {
         }).catch((e) => res.status(400 || 404).send(e));
     })
 
+    app.post("/social/", (req, res) => {
+        let user = new User({
+            email: req.body.email, password: req.body.password,
+        })
+        user.save().then((user) => { return user.generateAuthToken() }).then((token) => {
+            res.header("x-auth", token).send(user);
+
+
+        }).catch((e) => res.status(400 || 404).send(e));
+    })
 
 
     // GET
@@ -158,6 +168,7 @@ module.exports = (app) => {
     //DELETE LOGOUT
 
     app.delete("/users/me/token", auth, (req, res) => {
+
         req.user.removeToken(req.token).then(() => { res.status(200).send() }, () => { res.status(401).send() })
     })
     // DELETE
