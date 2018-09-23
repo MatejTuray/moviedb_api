@@ -28,7 +28,7 @@ module.exports = (app) => {
     // POST_USERS
     app.post("/users/", (req, res) => {
         let user = new User({
-            email: req.body.email, password: req.body.password,
+            username: req.body.username, email: req.body.email, password: req.body.password,
         })
         user.save().then((user) => { return user.generateAuthToken() }).then((token) => {
             res.header("x-auth", token).send(user);
@@ -51,7 +51,7 @@ module.exports = (app) => {
 
     app.post("/social/", (req, res) => {
         let user = new User({
-            email: req.body.email, password: req.body.password,
+            username: req.body.username, email: req.body.email, password: req.body.password,
         })
         user.save().then((user) => { return user.generateAuthToken() }).then((token) => {
             res.header("x-auth", token).send(user);

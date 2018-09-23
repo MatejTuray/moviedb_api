@@ -42,7 +42,7 @@ UserSchema.plugin(uniqueValidator)
 UserSchema.methods.toJSON = function () {
     user = this;
     let userObject = user.toObject()
-    return _.pick(userObject, ["_id", "email"])
+    return _.pick(userObject, ["_id", "email", "username"])
 }
 UserSchema.methods.generateAuthToken = function () {
     let user = this;
