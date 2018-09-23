@@ -6,10 +6,7 @@ const bcrypt = require("bcryptjs");
 const secret = require("../../config").secret
 let uniqueValidator = require('mongoose-unique-validator');
 const UserSchema = new mongoose.Schema({
-    username: {
-        type: String, required: true, trim: true, minlength: 1,unique: true,
-    },
-    
+  
     email: {
         type: String, required: true, trim: true, validate: {
             validator: (value) => {
@@ -24,6 +21,10 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String, required: true, minlength: 6
     },
+      username: {
+        type: String, required: true, trim: true, minlength: 1,unique: true,
+    },
+    
     tokens: [
         {
             access: {
@@ -87,11 +88,11 @@ UserSchema.statics.findByToken = function (token) {
         'tokens.access': 'auth'
     });
 }
-UserSchema.statics.findByCred = function (email, password) {
+UserSchema.statics.findByCred = function (email, password, username) {
     let User = this;
     return User.findOne({
-        email: email
-    }).then((user) => {
+        email: email,
+          }).then((user) => {
         if (!user) {
             return Promise.reject()
         }
