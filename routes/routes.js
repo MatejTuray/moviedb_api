@@ -36,7 +36,7 @@ module.exports = (app) => {
                 from: 'server.personalmoviedb@gmail.com',
                 to: req.body.email,
                 subject: "Personal Movie DB Sign Up",
-                text: `Hello and welcome to PMDB, your password is ${req.body.password}, keep it safe`
+                text: `Hello and welcome to PMDB
             }
             transporter.sendMail(mailOptions, (err, info) => {
                 if (error) {
